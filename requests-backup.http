@@ -1,0 +1,102 @@
+### from here https://learn.microsoft.com/en-gb/azure/ai-services/openai/how-to/code-interpreter?tabs=rest
+### and here https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/assistant
+@resource = <YOUR_AZURE_OPENAI_RESOURCE_NAME>
+@key = <YOUR_KEY>
+@model = <YOUR_MODEL_DEPLOYMENT>
+
+### initial request to create an assistant
+# @name assistant
+POST https://{{resource}}.openai.azure.com/openai/assistants?api-version=2024-05-01-preview
+api-key: {{key}}
+Content-Type: application/json
+
+{
+    "instructions": "You are an AI assistant that can write code to help answer math questions.",
+    "tools": [
+      { "type": "code_interpreter" }
+    ],
+    "model": "{{model}}"
+}
+
+### get assistant id from response
+@assistant_id = {{assistant.response.body.id}}
+
+### list assistants
+GET https://{{resource}}.openai.azure.com/openai/assistants?api-version=2024-05-01-preview
+api-key: {{key}}
+
+
+### create a thread
+# @name thread
+POST https://{{resource}}.openai.azure.com/openai/threads?api-version=2024-05-01-preview
+api-key: {{key}}
+
+
+### get the thread ID
+@thread_id = {{thread.response.body.id}}
+
+
+### create a message
+POST https://{{resource}}.openai.azure.com/openai/threads/{{thread_id}}/messages?api-version=2024-05-01-preview
+api-key: {{key}}
+Content-Type: application/json
+
+{
+    "content": "What is the square root of 16?",
+    "role": "user"
+}
+
+### list messages - should return the question
+GET https://{{resource}}.openai.azure.com/openai/threads/{{thread_id}}/messages?api-version=2024-05-01-preview
+api-key: {{key}}
+
+
+### run the thread
+# @name run
+POST https://{{resource}}.openai.azure.com/openai/threads/{{thread_id}}/runs?api-version=2024-05-01-preview
+api-key: {{key}}
+
+{
+    "assistant_id": "{{assistant_id}}"
+}
+
+### get run ID
+@run_id = {{run.response.body.id}}
+
+### list messages again after the run
+# @name listmessages
+GET https://{{resource}}.openai.azure.com/openai/threads/{{thread_id}}/messages?api-version=2024-05-01-preview
+api-key: {{key}}
+
+### get the response from the original question
+@response = {{listmessages.response.body.data.[1].content[0].text.value}}
+
+
+
+
+### more run queries
+### list runs
+GET https://{{resource}}.openai.azure.com/openai/threads/{{thread_id}}/runs?api-version=2024-05-01-preview
+api-key: {{key}}
+
+
+### list run steps
+GET https://{{resource}}.openai.azure.com/openai/threads/{{thread_id}}/runs/{{run_id}}/steps?api-version=2024-05-01-preview
+api-key: {{key}}
+
+
+### retrieve the run
+GET https://{{resource}}.openai.azure.com/openai/threads/{{thread_id}}/runs/{{run_id}}?api-version=2024-05-01-preview
+api-key: {{key}}
+
+### tidy up by deleting assistant
+DELETE https://{{resource}}.openai.azure.com/openai/assistants/{{assistant_id}}?api-version=2024-05-01-preview
+api-key: {{key}}
+
+### delete the thread
+DELETE https://{{resource}}.openai.azure.com/openai/threads/{{thread_id}}?api-version=2024-05-01-preview
+api-key: {{key}}
+
+
+
+### END OF THREAD
