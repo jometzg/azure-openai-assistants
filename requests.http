@@ -4,7 +4,7 @@
 @key = <YOUR_KEY>
 @model = <YOUR_MODEL_DEPLOYMENT>
 
-### initial request to create an assistant
+### STEP 1 create an assistant
 # @name assistant
 POST https://{{resource}}.openai.azure.com/openai/assistants?api-version=2024-05-01-preview
 api-key: {{key}}
@@ -21,22 +21,15 @@ Content-Type: application/json
 ### get assistant id from response
 @assistant_id = {{assistant.response.body.id}}
 
-### list assistants
-GET https://{{resource}}.openai.azure.com/openai/assistants?api-version=2024-05-01-preview
-api-key: {{key}}
-
-
-### create a thread
+### STEP 2 create a thread
 # @name thread
 POST https://{{resource}}.openai.azure.com/openai/threads?api-version=2024-05-01-preview
 api-key: {{key}}
 
-
 ### get the thread ID
 @thread_id = {{thread.response.body.id}}
 
-
-### create a message
+### STEP 3 - create a message. This is the ask of the assistant
 POST https://{{resource}}.openai.azure.com/openai/threads/{{thread_id}}/messages?api-version=2024-05-01-preview
 api-key: {{key}}
 Content-Type: application/json
@@ -46,12 +39,7 @@ Content-Type: application/json
     "role": "user"
 }
 
-### list messages - should return the question
-GET https://{{resource}}.openai.azure.com/openai/threads/{{thread_id}}/messages?api-version=2024-05-01-preview
-api-key: {{key}}
-
-
-### run the thread
+### STEP 4 run the thread
 # @name run
 POST https://{{resource}}.openai.azure.com/openai/threads/{{thread_id}}/runs?api-version=2024-05-01-preview
 api-key: {{key}}
@@ -63,7 +51,7 @@ api-key: {{key}}
 ### get run ID
 @run_id = {{run.response.body.id}}
 
-### list messages again after the run
+### STEP 5 list messages after the run has executed
 # @name listmessages
 GET https://{{resource}}.openai.azure.com/openai/threads/{{thread_id}}/messages?api-version=2024-05-01-preview
 api-key: {{key}}
@@ -71,8 +59,15 @@ api-key: {{key}}
 ### get the response from the original question
 @response = {{listmessages.response.body.data.[1].content[0].text.value}}
 
+### STEP 6 delete the thread
+DELETE https://{{resource}}.openai.azure.com/openai/threads/{{thread_id}}?api-version=2024-05-01-preview
+api-key: {{key}}
 
+### STEP 7 delete the assistant
+DELETE https://{{resource}}.openai.azure.com/openai/assistants/{{assistant_id}}?api-version=2024-05-01-preview
+api-key: {{key}}
 
+### END OF STEPS
 
 ### more run queries
 ### list runs
@@ -89,13 +84,6 @@ api-key: {{key}}
 GET https://{{resource}}.openai.azure.com/openai/threads/{{thread_id}}/runs/{{run_id}}?api-version=2024-05-01-preview
 api-key: {{key}}
 
-### tidy up by deleting assistant
-DELETE https://{{resource}}.openai.azure.com/openai/assistants/{{assistant_id}}?api-version=2024-05-01-preview
-api-key: {{key}}
-
-### delete the thread
-DELETE https://{{resource}}.openai.azure.com/openai/threads/{{thread_id}}?api-version=2024-05-01-preview
-api-key: {{key}}
 
 
 
