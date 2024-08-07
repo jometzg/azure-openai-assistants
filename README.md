@@ -16,3 +16,11 @@ The HTTP requests will need your Azure OpenAI resource name, key and the name of
 It is best to clone this repo and run inside Visual Studio code with the REST client.
 
 [Requests.http](./requests.http)
+
+## The Steps
+The steps in this demo are marked in the requests.http file, but are described below in a little more detail.
+
+1. STEP 1 - this creates the [assistant](https://learn.microsoft.com/en-us/azure/ai-services/openai/assistants-reference?tabs=python#create-an-assistant), gives it the instructions (AKA system prompt) and tells it to use the code interpreter. This returns an *assistant_id* which can be used later.
+2. STEP 2 - this creates a [thread](https://learn.microsoft.com/en-us/azure/ai-services/openai/assistants-reference-threads?tabs=python), which is used to manage an overall conversation thread with the assistant.
+3. STEP 3 - this creates a [message](https://learn.microsoft.com/en-us/azure/ai-services/openai/assistants-reference-messages?tabs=python#create-message) which is where we send the ask to the assistant. in this case "what is the square root of 16"
+4.  
