@@ -15,6 +15,8 @@ The HTTP requests will need your Azure OpenAI resource name, key and the name of
 ## The sample
 It is best to clone this repo and run inside Visual Studio code with the REST client.
 
+Alteratively, if you can access GitHub CodeSpaces, that should work just as well.
+
 [Requests.http](./requests.http)
 
 ## The Steps
