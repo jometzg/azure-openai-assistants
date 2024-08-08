@@ -12,7 +12,9 @@ There are limits on the region's in which the assistants API is currently [deplo
 
 The HTTP requests will need your Azure OpenAI resource name, key and the name of a model deployment. I suggest you use gpt-4o for this as this is the model that this has been tested against.
 
-## The sample
+## Simple maths sample
+This is a simple query to find the square root of a number you choose.
+
 It is best to clone this repo and run inside Visual Studio code with the REST client.
 
 Alteratively, if you can access GitHub CodeSpaces, that should work just as well.
@@ -29,3 +31,27 @@ The steps in this demo are marked in the requests.http file, but are described b
 5.  STEP 5 - [lists the messages](https://learn.microsoft.com/en-us/azure/ai-services/openai/assistants-reference-messages?tabs=python#list-messages) in the thread where we should see the LLM response in one of the messages. The response value is extracted to a variable *response* so you can see the text of the result of the query.
 6.  STEP 6 - deletes the thread
 7.  STEP 7 - deletes the assistant
+
+# Generating a graph sample
+To really show that the LLM isn't just retrieving ansswers from its training data, this question is a little more difficult.
+
+"can you graph a sine wave of 1 peak to peak and show 2 cycles and return this as an image file"
+
+In terms of steps, it is pretty similar to the first sample, but gets the generated file name and pulls back the contents of the file.
+
+[SineWaveRequests.http](./sinewaverequests.http)
+
+## Steps
+The steps in this demo are marked in the sinewaverequests.http file, but are described below in a little more detail.
+
+1. STEP 1 - this creates the [assistant]([https://learn.microsoft.com/en-us/azure/ai-services/openai/assistants-reference?tabs=python#create-an-assistant](https://learn.microsoft.com/en-us/azure/ai-services/openai/assistants-reference?tabs=python#create-an-assistant)), gives it the instructions (AKA system prompt) and tells it to use the code interpreter. This returns an *assistant_id* which can be used later.
+2. STEP 2 - this creates a [thread](https://learn.microsoft.com/en-us/azure/ai-services/openai/assistants-reference-threads?tabs=python), which is used to manage an overall conversation thread with the assistant.
+3. STEP 3 - this creates a [message](https://learn.microsoft.com/en-us/azure/ai-services/openai/assistants-reference-messages?tabs=python#create-message) which is where we send the ask to the assistant. in this case "what is the square root of 16"
+4.  STEP 4 - this [runs](https://learn.microsoft.com/en-us/azure/ai-services/openai/assistants-reference-runs?tabs=python#create-run) the thread. So now the assistant is attempting to ansswe the query.
+5.  STEP 5 - [lists the messages](https://learn.microsoft.com/en-us/azure/ai-services/openai/assistants-reference-messages?tabs=python#list-messages) in the thread where we should see the LLM response in one of the messages. The response has a file_id of a file that gets generated server side.
+6.  STEP 6 - gets the [contents of the file](https://learn.microsoft.com/en-us/rest/api/azureopenai/files/get-content?view=rest-azureopenai-2024-05-01-preview&tabs=HTTP) this is an HTTP response. In the response pane you can save the contents of the file to your local PC and display
+
+![alt text](./images/sine_wave.png "generated sine wave")
+   
+7.  STEP 7 - deletes the thread
+8.  STEP 8 - deletes the assistant
