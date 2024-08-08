@@ -12,7 +12,7 @@ There are limits on the region's in which the assistants API is currently [deplo
 
 The HTTP requests will need your Azure OpenAI resource name, key and the name of a model deployment. I suggest you use gpt-4o for this as this is the model that this has been tested against.
 
-## Simple maths sample
+# Simple maths sample
 This is a simple query to find the square root of a number you choose.
 
 It is best to clone this repo and run inside Visual Studio code with the REST client.
