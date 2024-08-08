@@ -64,14 +64,14 @@ can you graph a filtered square wave (where the filter is 4 times the frequency 
 ```
 If you then inspect the list of messages following the run, you can see how it approaches this:
 
-Sure! To achieve this, I will follow these steps
-1. Create a square wave signal.
-2. Design a low-pass filter with a cutoff frequency that is 4 times the frequency of the square wave.
-3. Filter the square wave signal.
-4. Plot the original and filtered square waves.
-5. Save the plot as an image file.
-
-Let's start by writing the code to accomplish these steps.
+> Sure! To achieve this, I will follow these steps
+> 1. Create a square wave signal.
+> 2. Design a low-pass filter with a cutoff frequency that is 4 times the frequency of the square wave.
+> 3. Filter the square wave signal.
+> 4. Plot the original and filtered square waves.
+> 5. Save the plot as an image file.
+>
+> Let's start by writing the code to accomplish these steps.
 
 This results in:
 ![alt text](./images/filtered_square_wave.png "generated square wave")
