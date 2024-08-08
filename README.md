@@ -80,7 +80,7 @@ You can then ask what code it used to generate this:
 ```
 can you show me they python coded to generate this image?
 ```
-Of course! Here's the Python code used to generate the filtered square wave plot:\n\n
+Of course! Here's the Python code used to generate the filtered square wave plot:
 ```
 python
 import numpy as np
