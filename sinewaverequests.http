@@ -1,0 +1,80 @@
+### from here https://learn.microsoft.com/en-gb/azure/ai-services/openai/how-to/code-interpreter?tabs=rest
+### and here https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/assistant
+@resource = <YOUR_AZURE_OPENAI_RESOURCE_NAME>
+@key = <YOUR_KEY>
+@model = <YOUR_MODEL_DEPLOYMENT>
+
+### STEP 1 - initial request to create an assistant
+# @name assistant
+POST https://{{resource}}.openai.azure.com/openai/assistants?api-version=2024-05-01-preview
+api-key: {{key}}
+Content-Type: application/json
+
+{
+    "instructions": "You are an AI assistant that can write code to help answer math questions.",
+    "tools": [
+      { "type": "code_interpreter" }
+    ],
+    "model": "{{model}}"
+}
+
+### get assistant id from response
+@assistant_id = {{assistant.response.body.id}}
+
+### STEP 2 - create a thread
+# @name thread
+POST https://{{resource}}.openai.azure.com/openai/threads?api-version=2024-05-01-preview
+api-key: {{key}}
+
+### get the thread ID
+@thread_id = {{thread.response.body.id}}
+
+
+### STEP 3 - create a message
+POST https://{{resource}}.openai.azure.com/openai/threads/{{thread_id}}/messages?api-version=2024-05-01-preview
+api-key: {{key}}
+Content-Type: application/json
+
+{
+    "content": "can you graph a sine wave of 1 peak to peak and show 2 cycles and return this as an image file",
+    "role": "user"
+}
+
+### STEP 4 - run the thread
+# @name run
+POST https://{{resource}}.openai.azure.com/openai/threads/{{thread_id}}/runs?api-version=2024-05-01-preview
+api-key: {{key}}
+
+{
+    "assistant_id": "{{assistant_id}}"
+}
+
+### get run ID
+@run_id = {{run.response.body.id}}
+
+### STEP 5 - list messages again after the run
+# @name listmessages
+GET https://{{resource}}.openai.azure.com/openai/threads/{{thread_id}}/messages?api-version=2024-05-01-preview
+api-key: {{key}}
+
+### get the response from the original question
+@response = {{listmessages.response.body.data.[1].content[0].text.value}}
+
+### gat an image from the response
+@image_path = {{listmessages.response.body.data.[0].content[1].text.annotations[0].text}}
+@resp_file_id =    {{listmessages.response.body.data.[0].content[1].text.annotations[0].file_path.file_id}}
+
+
+### STEP 6 - get the image file
+GET https://{{resource}}.openai.azure.com/openai/files/{{resp_file_id}}/content?api-version=2024-05-01-preview
+api-key: {{key}}
+Accept: image/png
+
+### STEP 7 delete the thread
+DELETE https://{{resource}}.openai.azure.com/openai/threads/{{thread_id}}?api-version=2024-05-01-preview
+api-key: {{key}}
+
+### STEP 8 delete the assistant
+DELETE https://{{resource}}.openai.azure.com/openai/assistants/{{assistant_id}}?api-version=2024-05-01-preview
+api-key: {{key}}
+
