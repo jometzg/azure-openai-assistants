@@ -55,3 +55,18 @@ The steps in this demo are marked in the sinewaverequests.http file, but are des
    
 7.  STEP 7 - deletes the thread
 8.  STEP 8 - deletes the assistant
+
+# Another graph sample
+Exactly the same steps above, but a different question:
+
+```
+can you graph a filtered square wave (where the filter is 4 times the frequency of the square wave) of 1 peak to peak and show 2 cycles and return this as an image file
+```
+If you then inspect the list of messages following the run, you can see how it approaches this:
+```
+Sure! To achieve this, I will follow these steps:\n\n1. Create a square wave signal.\n2. Design a low-pass filter with a cutoff frequency that is 4 times the frequency of the square wave.\n3. Filter the square wave signal.\n4. Plot the original and filtered square waves.\n5. Save the plot as an image file.\n\nLet's start by writing the code to accomplish these steps.
+```
+
+This results in:
+![alt text](./images/filtered_square_wave.png "generated square wave")
+
