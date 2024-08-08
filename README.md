@@ -76,3 +76,50 @@ If you then inspect the list of messages following the run, you can see how it a
 This results in:
 ![alt text](./images/filtered_square_wave.png "generated square wave")
 
+You can then ask what code it used to generate this:
+```
+can you show me they python coded to generate this image?
+```
+Of course! Here's the Python code used to generate the filtered square wave plot:\n\n
+```
+python
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import signal
+# Parameters
+frequency = 5
+# Frequency of the square wave (Hz)
+sampling_rate = 1000
+# Sampling rate (samples per second)
+duration = 2 / frequency
+# Duration to display (2 cycles)
+amplitude = 0.5
+# Amplitude of the square wave (peak-to-peak amplitude is 1)
+
+# Time array
+t = np.linspace(0, duration, int(sampling_rate * duration), endpoint=False)
+# Create square wave
+square_wave = amplitude * signal.square(2 * np.pi * frequency * t)
+# Design a low-pass filter
+cutoff_frequency = 4 * frequency
+# Cutoff frequency (4 times the square wave frequency)
+nyquist_rate = 0.5 * sampling_rate
+normal_cutoff = cutoff_frequency / nyquist_rate
+b, a = signal.butter(4, normal_cutoff, btype='low', analog=False)
+# Apply the filter
+filtered_square_wave = signal.filtfilt(b, a, square_wave)
+# Plot the original and filtered square waves
+plt.figure(figsize=(10, 6))
+plt.plot(t, square_wave, label='Original Square Wave')
+plt.plot(t, filtered_square_wave, label='Filtered Square Wave', linestyle='--')
+plt.xlabel('Time [s]')
+plt.ylabel('Amplitude')
+plt.title('Filtered Square Wave')
+plt.legend()
+# Save the plot as an image file
+file_path = '/mnt/data/filtered_square_wave.png'
+plt.savefig(file_path)
+plt.show()
+```
+This code creates a square wave, designs a low-pass filter with a cutoff frequency four times the square wave frequency, filters the square wave, and then plots and saves the graph as an image file.
+
