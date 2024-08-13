@@ -33,7 +33,7 @@ The steps in this demo are marked in the requests.http file, but are described b
 7.  STEP 7 - deletes the assistant
 
 # Generating a graph sample
-To really show that the LLM isn't just retrieving ansswers from its training data, this question is a little more difficult.
+To really show that the LLM isn't just retrieving answers from its training data, this question is a little more difficult.
 
 "can you graph a sine wave of 1 peak to peak and show 2 cycles and return this as an image file"
 
