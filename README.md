@@ -17,7 +17,7 @@ This is a simple query to find the square root of a number you choose.
 
 It is best to clone this repo and run inside Visual Studio code with the REST client.
 
-Alteratively, if you can access GitHub CodeSpaces, that should work just as well.
+Alternatively, if you can access GitHub CodeSpaces, that should work just as well.
 
 [Requests.http](./requests.http)
 
